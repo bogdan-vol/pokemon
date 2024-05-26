@@ -2,7 +2,7 @@ import { Avatar, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 
 interface Props {
   name: string;
-  id: number;
+  id: string;
 }
 
 export default function PokemonItem({ name, id }: Props) {

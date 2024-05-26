@@ -4,13 +4,11 @@ import userEvent from "@testing-library/user-event";
 import TypesDropdown from "./TypesDropdown";
 import { pokemonClient } from "@/lib/pokemon.utils";
 
-const mockSearchParamsGet = jest.fn().mockReturnValue("");
+const mockSearchParams = jest.fn();
 const mockUseRouterPush = jest.fn();
 jest.mock("next/navigation", () => ({
   ...jest.requireActual("next/navigation"),
-  useSearchParams: () => ({
-    get: () => mockSearchParamsGet(),
-  }),
+  useSearchParams: () => mockSearchParams(),
   useRouter: jest
     .fn()
     .mockReturnValue({ push: (path: string) => mockUseRouterPush(path) }),
@@ -30,7 +28,12 @@ describe("TypesDropdown", () => {
       } as any);
   });
 
+  afterEach(() => {
+    mockSearchParams.mockReset();
+  });
+
   it("should contain an input field", async () => {
+    mockSearchParams.mockReturnValue(new URLSearchParams(""));
     render(<TypesDropdown />);
     await waitFor(() => {
       expect(screen.getByLabelText("Type")).toBeInTheDocument();
@@ -38,6 +41,7 @@ describe("TypesDropdown", () => {
   });
 
   it("type params should change on input submit", async () => {
+    mockSearchParams.mockReturnValue(new URLSearchParams(""));
     render(<TypesDropdown />);
     const input = screen.getByLabelText("Type");
     await userEvent.click(input);
@@ -46,6 +50,23 @@ describe("TypesDropdown", () => {
     await userEvent.click(option);
     expect(mockUseRouterPush).toHaveBeenCalledWith(
       expect.stringContaining("type=fighting")
+    );
+  });
+
+  it("type dropdown should reset search param", async () => {
+    mockSearchParams.mockReturnValue(new URLSearchParams("search=whatever"));
+    render(<TypesDropdown />);
+    const input = screen.getByLabelText("Type");
+    await userEvent.click(input);
+    const option = screen.getByText("fighting");
+    expect(option).toBeInTheDocument();
+    await userEvent.click(option);
+
+    expect(mockUseRouterPush).toHaveBeenCalledWith(
+      expect.stringContaining("type=fighting")
+    );
+    expect(mockUseRouterPush).toHaveBeenCalledWith(
+      expect.not.stringContaining("search=whatever")
     );
   });
 });

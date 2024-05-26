@@ -3,9 +3,7 @@ import Pokedex from "./page";
 
 jest.mock("next/navigation", () => ({
   ...jest.requireActual("next/navigation"),
-  useSearchParams: () => ({
-    get: jest.fn(),
-  }),
+  useSearchParams: () => new URLSearchParams(""),
   useRouter: jest.fn(),
 }));
 

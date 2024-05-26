@@ -3,13 +3,11 @@ import userEvent from "@testing-library/user-event";
 
 import SearchInput from "./SearchInput";
 
-const mockSearchParamsGet = jest.fn().mockReturnValue("");
+const mockSearchParams = jest.fn().mockReturnValue(new URLSearchParams(""));
 const mockUseRouterPush = jest.fn();
 jest.mock("next/navigation", () => ({
   ...jest.requireActual("next/navigation"),
-  useSearchParams: () => ({
-    get: () => mockSearchParamsGet(),
-  }),
+  useSearchParams: () => mockSearchParams(),
   useRouter: jest
     .fn()
     .mockReturnValue({ push: (path: string) => mockUseRouterPush(path) }),

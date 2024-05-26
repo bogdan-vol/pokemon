@@ -1,19 +1,25 @@
 "use client";
 
 import { TextField } from "@mui/material";
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import { useSearchParamFilter } from "@/hooks/searchParamFilters.hook";
 
 export default function SearchInput() {
   const { addSearchParam, getSearchSearchParam } =
     useSearchParamFilter("search");
+  const searchSearchParam = getSearchSearchParam();
 
-  const [searchedPokemonValue, setSearchedPokemonValue] =
-    useState(getSearchSearchParam);
+  const [searchedPokemonValue, setSearchedPokemonValue] = useState(
+    getSearchSearchParam()
+  );
+
+  useEffect(() => {
+    setSearchedPokemonValue(searchSearchParam);
+  }, [searchSearchParam]);
 
   const searchPokemonSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    addSearchParam(searchedPokemonValue);
+    addSearchParam(searchedPokemonValue, ["type"]);
   };
 
   return (
