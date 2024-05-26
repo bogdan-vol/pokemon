@@ -1,5 +1,6 @@
 import PokemonsList from "@/components/PokemonsList/PokemonsList";
 import SearchInput from "@/components/SearchInput/SearchInput";
+import TypesDropdown from "@/components/TypesDropdown/TypesDropdown";
 
 export default function Pokedex() {
   return (
@@ -14,6 +15,7 @@ export default function Pokedex() {
           className="flex justify-between xl:w-[1000px] m-auto"
         >
           <SearchInput />
+          <TypesDropdown />
         </section>
         <section
           aria-label="list"
