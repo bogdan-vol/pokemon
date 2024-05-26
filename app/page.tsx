@@ -1,9 +1,25 @@
-import Image from "next/image";
+import SearchInput from "@/components/SearchInput/SearchInput";
 
-export default function Home() {
+export default function Pokedex() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>App Router</h1>
+    <main className="p-2 bg-trending-dark-green">
+      <h1 className="text-5xl text-trending-dirt xl:w-[1000px] m-auto px-2">
+        Pokedex
+      </h1>
+      <div className="bg-trending-dirt p-2">
+        <section
+          aria-label="filters"
+          title="Filters"
+          className="flex justify-between xl:w-[1000px] m-auto"
+        >
+          <SearchInput />
+        </section>
+        <section
+          aria-label="list"
+          title="List"
+          className="xl:w-[1000px] m-auto"
+        ></section>
+      </div>
     </main>
   );
 }
