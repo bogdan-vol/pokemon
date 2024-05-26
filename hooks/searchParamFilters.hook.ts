@@ -6,10 +6,24 @@ export const useSearchParamFilter = (searchParamName: string) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  return (paramValue: string) =>
+  const addSearchParam = (paramValue: string) =>
     router.push(
       pathname +
         "?" +
         createQueryString(searchParams, searchParamName, paramValue)
     );
+
+  const getCurrentPageSearchParam = () =>
+    parseInt(searchParams.get("page") || "1");
+
+  const getSearchSearchParam = () => searchParams.get("search") || "";
+
+  const getTypeSearchParam = () => searchParams.get("type") || "";
+
+  return {
+    addSearchParam,
+    getCurrentPageSearchParam,
+    getSearchSearchParam,
+    getTypeSearchParam,
+  };
 };
