@@ -6,11 +6,12 @@ import { Autocomplete, TextField } from "@mui/material";
 
 export default function TypesDropdown() {
   const types = usePokeTypes();
-  const { addSearchParam } = useSearchParamFilter("type");
-  console.log(types);
+  const { addSearchParam, getTypeSearchParam } = useSearchParamFilter("type");
 
+  const selectedType = getTypeSearchParam();
   return (
     <Autocomplete
+      value={{ name: selectedType, label: selectedType, url: "" }}
       disablePortal
       id="combo-box-demo"
       options={(types?.results || []).map((type) => ({
@@ -20,7 +21,7 @@ export default function TypesDropdown() {
       sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label="Type" />}
       onChange={(_, selection) => {
-        if (selection) addSearchParam(selection.label);
+        addSearchParam(selection?.label || "", ["search"]);
       }}
     />
   );

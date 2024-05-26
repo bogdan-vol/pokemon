@@ -1,5 +1,5 @@
 import { pokemonClient } from "@/lib/pokemon.utils";
-import { NamedAPIResourceList, Pokemon } from "pokenode-ts";
+import { NamedAPIResourceList, Pokemon, Type } from "pokenode-ts";
 import { useEffect, useState } from "react";
 
 export const usePokeTypes = () => {
@@ -38,4 +38,17 @@ export const usePokeByName = (searchedPokemonValue: string) => {
   }, [searchedPokemonValue]);
 
   return searchedPokemon;
+};
+
+export const usePokeByType = (typePokemonValue: string) => {
+  const [pokeType, setPokeType] = useState<Type>();
+
+  useEffect(() => {
+    if (typePokemonValue)
+      pokemonClient
+        .getTypeByName(typePokemonValue)
+        .then((pk) => setPokeType(pk));
+  }, [typePokemonValue]);
+
+  return pokeType;
 };
