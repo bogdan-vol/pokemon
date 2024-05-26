@@ -7,7 +7,7 @@ interface Props {
 
 export default function PokemonItem({ name, id }: Props) {
   return (
-    <div className="border-2 border-trending-dark-green rounded-md my-1">
+    <div className="border-2 bg-trending-dark-green rounded-md my-1">
       <ListItem>
         <ListItemAvatar>
           <Avatar
@@ -18,7 +18,7 @@ export default function PokemonItem({ name, id }: Props) {
         </ListItemAvatar>
         <ListItemText
           primary={
-            <div className="text-3xl text-trending-dark-green">{name}</div>
+            <div className="text-3xl text-trending-dark-orange">{name}</div>
           }
           className="capitalize"
         />

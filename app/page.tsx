@@ -8,7 +8,7 @@ export default function Pokedex() {
       <h1 className="text-5xl text-trending-dirt xl:w-[1000px] m-auto px-2">
         Pokedex
       </h1>
-      <div className="bg-trending-dirt p-2">
+      <div className="bg-trending-dirt p-2 rounded-md">
         <section
           aria-label="filters"
           title="Filters"
