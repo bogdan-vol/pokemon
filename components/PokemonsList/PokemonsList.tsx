@@ -1,46 +1,23 @@
 "use client";
 
-import { createQueryString, pokemonClient } from "@/lib/pokemon.utils";
 import { List, Pagination } from "@mui/material";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { NamedAPIResourceList, Pokemon } from "pokenode-ts";
-import { useEffect, useState } from "react";
 import PokemonItem from "../PokemonItem/PokemonItem";
+import { usePokeAll, usePokeByName } from "@/hooks/pokemonClient.hook";
+import { useSearchParamFilter } from "@/hooks/searchParamFilters.hook";
 
 const pageSize = 10;
 export default function PokemonsList() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const { addSearchParam, getCurrentPageSearchParam, getSearchSearchParam } =
+    useSearchParamFilter("page");
 
-  const [searchedPokemon, setSearchedPokemon] = useState<Pokemon>();
-  const [pokemons, setPokemons] = useState<NamedAPIResourceList>();
+  const currentPage = getCurrentPageSearchParam();
+  const searchedPokemonValue = getSearchSearchParam();
 
-  const currentPage = parseInt(searchParams.get("page") || "1");
-  const searchedPokemonValue = searchParams.get("search") || "";
-
-  useEffect(() => {
-    pokemonClient
-      .listPokemons((currentPage - 1) * pageSize, pageSize)
-      .then((ps) => {
-        setPokemons(ps);
-      });
-  }, [currentPage]);
-
-  useEffect(() => {
-    if (searchedPokemonValue)
-      pokemonClient.getPokemonByName(searchedPokemonValue).then((pk) => {
-        setSearchedPokemon(pk);
-      });
-    else setSearchedPokemon(undefined);
-  }, [searchedPokemonValue]);
+  const pokemons = usePokeAll(currentPage, pageSize);
+  const searchedPokemon = usePokeByName(searchedPokemonValue);
 
   const onPageChange = (_: any, pageNumber: number) => {
-    router.push(
-      pathname +
-        "?" +
-        createQueryString(searchParams, "page", pageNumber.toString())
-    );
+    addSearchParam(pageNumber.toString());
   };
 
   return (
@@ -62,6 +39,7 @@ export default function PokemonsList() {
         <div className="flex justify-center pb-10">
           {!searchedPokemon && (
             <Pagination
+              page={currentPage}
               count={Math.ceil((pokemons?.count || 0) / pageSize)}
               onChange={onPageChange}
             />

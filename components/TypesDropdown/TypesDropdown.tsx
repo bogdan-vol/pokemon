@@ -6,7 +6,7 @@ import { Autocomplete, TextField } from "@mui/material";
 
 export default function TypesDropdown() {
   const types = usePokeTypes();
-  const addSearchParam = useSearchParamFilter("type");
+  const { addSearchParam } = useSearchParamFilter("type");
   console.log(types);
 
   return (
