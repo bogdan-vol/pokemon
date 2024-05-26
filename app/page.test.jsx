@@ -1,6 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import Pokedex from "./page";
 
+jest.mock("next/navigation", () => ({
+  ...jest.requireActual("next/navigation"),
+  useSearchParams: () => ({
+    get: jest.fn(),
+  }),
+  useRouter: jest.fn(),
+}));
+
 describe("Pokedex", () => {
   it("should containd a header", () => {
     render(<Pokedex />);
