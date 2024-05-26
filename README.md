@@ -16,9 +16,32 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+## Repo specific
+
+The repo has some minimum CI/CD.
+
+- merging on main requires a PR
+- I prepared a github action for running the tests before being able to merge a PR
+
+## Times
+
+- setup ~2h
+- r&d on best wasy to implement filtering ~3h
+- listing pokemons ~1h
+- types dropdown ~1h
+- search ~1h
+- details page ~1h
+- writing tests cummulated ~forever
+
+## Additional functionality
+
+- the pokemons list is paginated
+- if filtered by type, pagination is disabled (no posibility in pokemon API)
+- if filtered by name, pagination is disabled (no posibility in pokemon API)
+- the details page has a tab switcher; you can switch between a pokemon's moves or stats
+- most basic components are from [Material UI](https://mui.com/material-ui/getting-started/) (inputs, dropdowns, tabs, list etc)
 
 ## Learn More
 
