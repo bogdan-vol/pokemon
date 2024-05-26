@@ -32,4 +32,18 @@ describe("SearchInput", () => {
       expect.stringContaining("search=luxray")
     );
   });
+
+  it("search input should reset type param", async () => {
+    mockSearchParams.mockReturnValue(new URLSearchParams("type=whatever"));
+    render(<SearchInput />);
+    const input = screen.getByLabelText("Filter by name");
+    await userEvent.type(input, "luxray{enter}");
+
+    expect(mockUseRouterPush).toHaveBeenCalledWith(
+      expect.stringContaining("search=luxray")
+    );
+    expect(mockUseRouterPush).toHaveBeenCalledWith(
+      expect.not.stringContaining("type=fighting")
+    );
+  });
 });
