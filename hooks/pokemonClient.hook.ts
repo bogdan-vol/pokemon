@@ -28,16 +28,22 @@ export const usePokeAll = (currentPage: number, pageSize: number) => {
 
 export const usePokeByName = (searchedPokemonValue: string) => {
   const [searchedPokemon, setSearchedPokemon] = useState<Pokemon>();
+  const [searchedPokemonErr, setSearchedPokemonErr] = useState("");
 
   useEffect(() => {
     if (searchedPokemonValue)
-      pokemonClient.getPokemonByName(searchedPokemonValue).then((pk) => {
-        setSearchedPokemon(pk);
-      });
+      pokemonClient
+        .getPokemonByName(searchedPokemonValue)
+        .then((pk) => {
+          setSearchedPokemon(pk);
+        })
+        .catch((e) => {
+          setSearchedPokemonErr("Pokemon not found");
+        });
     else setSearchedPokemon(undefined);
   }, [searchedPokemonValue]);
 
-  return searchedPokemon;
+  return { searchedPokemon, searchedPokemonErr };
 };
 
 export const usePokeByType = (typePokemonValue: string) => {

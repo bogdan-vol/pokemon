@@ -24,12 +24,13 @@ export default function PokemonsList() {
   const typePokemonValue = getTypeSearchParam();
 
   const pokemons = usePokeAll(currentPage, pageSize);
-  const searchedPokemon = usePokeByName(searchedPokemonValue);
+  const { searchedPokemon } = usePokeByName(searchedPokemonValue);
   const pokesByType = usePokeByType(typePokemonValue);
 
   const onPageChange = (_: any, pageNumber: number) => {
     addSearchParam(pageNumber.toString());
   };
+
   const isLoading = !pokemons && !pokesByType && !searchedPokemon;
   return (
     <div className={isLoading ? "animate-pulse" : ""}>

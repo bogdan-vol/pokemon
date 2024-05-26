@@ -7,6 +7,7 @@ import TabContainer from "@/components/TabContainer/TabContainer";
 import { usePokeByName } from "@/hooks/pokemonClient.hook";
 import { Box, Tab, Tabs } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function Details({
@@ -16,8 +17,16 @@ export default function Details({
 }) {
   const [tabValue, setTabValue] = useState(0);
 
-  const pokemon = usePokeByName(name);
-  if (!pokemon) return;
+  const { searchedPokemon, searchedPokemonErr } = usePokeByName(name);
+  if (searchedPokemonErr)
+    return (
+      <div className="bg-red-600 font-bold text-center">
+        {searchedPokemonErr}
+        <br></br>
+        <Link href={"/"}>Go home</Link>
+      </div>
+    );
+  if (!searchedPokemon) return;
 
   const a11yProps = (index: number) => {
     return {
@@ -41,9 +50,9 @@ export default function Details({
           title="Summary"
           className="flex justify-between xl:w-[1000px] m-auto"
         >
-          <PokemonSummary pokemon={pokemon} />
+          <PokemonSummary pokemon={searchedPokemon} />
           <Image
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${searchedPokemon.id}.png`}
             width={500}
             height={500}
             alt={`Picture of ${name}`}
@@ -66,10 +75,10 @@ export default function Details({
               </Tabs>
             </Box>
             <TabContainer value={tabValue} index={0}>
-              <Moves items={pokemon.moves} />
+              <Moves items={searchedPokemon.moves} />
             </TabContainer>
             <TabContainer value={tabValue} index={1}>
-              <Stats items={pokemon.stats} />
+              <Stats items={searchedPokemon.stats} />
             </TabContainer>
           </Box>
         </section>
