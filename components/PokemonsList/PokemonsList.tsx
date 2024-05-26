@@ -8,6 +8,7 @@ import {
   usePokeByType,
 } from "@/hooks/pokemonClient.hook";
 import { useSearchParamFilter } from "@/hooks/searchParamFilters.hook";
+import Link from "next/link";
 
 const pageSize = 10;
 export default function PokemonsList() {
@@ -29,46 +30,55 @@ export default function PokemonsList() {
   const onPageChange = (_: any, pageNumber: number) => {
     addSearchParam(pageNumber.toString());
   };
-
+  const isLoading = !pokemons && !pokesByType && !searchedPokemon;
   return (
-    <>
-      <>
-        <List sx={{ width: "100%" }}>
-          {!searchedPokemon ? (
-            !typePokemonValue ? (
-              pokemons?.results?.map(({ name }, i) => (
+    <div className={isLoading ? "animate-pulse" : ""}>
+      <List sx={{ width: "100%" }}>
+        {isLoading &&
+          Array.from(Array(3).keys()).map((key) => (
+            <div
+              className="h-20  w-full bg-trending-dark-green my-1 rounded-md"
+              key={key}
+            />
+          ))}
+        {!searchedPokemon ? (
+          !typePokemonValue ? (
+            pokemons?.results?.map(({ name }, i) => (
+              <Link href={`/details/${name}`} key={name}>
                 <PokemonItem
-                  key={name}
                   id={((currentPage - 1) * 10 + i + 1).toString()}
                   name={name}
                 />
-              ))
-            ) : (
-              pokesByType?.pokemon.map(({ pokemon: { name, url } }) => (
-                <PokemonItem
-                  key={name}
-                  id={url.split("/").reverse()[1]}
-                  name={name}
-                />
-              ))
-            )
+              </Link>
+            ))
           ) : (
+            pokesByType?.pokemon.map(({ pokemon: { name, url } }) => (
+              <Link href={`/details/${name}`} key={name}>
+                <PokemonItem id={url.split("/").reverse()[1]} name={name} />
+              </Link>
+            ))
+          )
+        ) : (
+          <Link
+            href={`/details/${searchedPokemon.name}`}
+            key={searchedPokemon.name}
+          >
             <PokemonItem
               id={searchedPokemon.id.toString()}
               name={searchedPokemon.name}
             />
-          )}
-        </List>
-        <div className="flex justify-center pb-10">
-          {!searchedPokemon && !typePokemonValue && (
-            <Pagination
-              page={currentPage}
-              count={Math.ceil((pokemons?.count || 0) / pageSize)}
-              onChange={onPageChange}
-            />
-          )}
-        </div>
-      </>
-    </>
+          </Link>
+        )}
+      </List>
+      <div className="flex justify-center pb-10">
+        {!searchedPokemon && !typePokemonValue && (
+          <Pagination
+            page={currentPage}
+            count={Math.ceil((pokemons?.count || 0) / pageSize)}
+            onChange={onPageChange}
+          />
+        )}
+      </div>
+    </div>
   );
 }
