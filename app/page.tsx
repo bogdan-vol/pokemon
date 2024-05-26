@@ -1,3 +1,4 @@
+import PokemonsList from "@/components/PokemonsList/PokemonsList";
 import SearchInput from "@/components/SearchInput/SearchInput";
 
 export default function Pokedex() {
@@ -18,7 +19,9 @@ export default function Pokedex() {
           aria-label="list"
           title="List"
           className="xl:w-[1000px] m-auto"
-        ></section>
+        >
+          <PokemonsList />
+        </section>
       </div>
     </main>
   );
