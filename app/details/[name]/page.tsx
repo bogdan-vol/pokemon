@@ -8,7 +8,7 @@ import { usePokeByName } from "@/hooks/pokemonClient.hook";
 import { Box, Tab, Tabs } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 
 export default function Details({
   params: { name },
@@ -39,6 +39,12 @@ export default function Details({
     setTabValue(newValue);
   };
 
+  const egeretsag: MouseEventHandler<HTMLButtonElement> = (e) => {
+    if (e.detail === 7) {
+      e.currentTarget.classList.toggle("animate-spin");
+    }
+  };
+
   return (
     <main className="p-2 bg-trending-dark-green">
       <h1 className="text-5xl text-trending-dirt xl:w-[1000px] m-auto px-2 capitalize">
@@ -51,12 +57,14 @@ export default function Details({
           className="flex justify-between xl:w-[1000px] m-auto"
         >
           <PokemonSummary pokemon={searchedPokemon} />
-          <Image
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${searchedPokemon.id}.png`}
-            width={500}
-            height={500}
-            alt={`Picture of ${name}`}
-          />
+          <button onClick={egeretsag}>
+            <Image
+              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${searchedPokemon.id}.png`}
+              width={500}
+              height={500}
+              alt={`Picture of ${name}`}
+            />
+          </button>
         </section>
         <section
           aria-label="tabs"
